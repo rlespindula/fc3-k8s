@@ -18,7 +18,7 @@ spec:
         - name: goserver
           image: "rogervv/hello-go:v5"
 
-          #readiness
+          # readiness  (tira o tráfego da aplicação)
           readinessProbe:
             httpGet:
               path: /healthz
@@ -26,6 +26,17 @@ spec:
             periodSeconds: 3
             failureThreshold: 1      # faz 3 verificações dos 3 segundos para reiniciar o container
             initialDelaySeconds: 10  # espera 10 segundos para iniciar o readiness
+
+          # liveness (recria o processo)
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080        # porta do container
+            periodSeconds: 5
+            failureThreshold: 1     # faz 3 verificações dos 5 segundos para reiniciar o container
+            timeoutSeconds: 1
+            successThreshold: 1     # faz 3 verificações de timeout de 1 segundo
+            initialDelaySeconds: 15  # espera 10 segundos para iniciar o liveness
 
           envFrom:
             - configMapRef:
