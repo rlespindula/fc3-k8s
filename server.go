@@ -40,8 +40,8 @@ func Secret(w http.ResponseWriter, r *http.Request) {
 
 func Healthz(w http.ResponseWriter, r *http.Request) {
 	duration := time.Since(startedAt)
-	// a aplicação fica disponível entre os 10s e 30s de duration
-	if duration.Seconds() < 10 || duration.Seconds() > 30 {
+	// a aplicação fica disponível quando for > 10s de duration
+	if duration.Seconds() < 10 {
 		w.WriteHeader(500)
 		w.Write([]byte(fmt.Sprintf("Duration: %v", duration.Seconds())))
 	} else {

@@ -9,4 +9,4 @@ spec:
     kind: Deployment
   minReplicas: 1
   maxReplicas: 5
-  targetCPUUtilizationPercentage: 75   # 75/80 é um número bom para produção
+  targetCPUUtilizationPercentage: 25   # 75/80 é um número bom para produção
