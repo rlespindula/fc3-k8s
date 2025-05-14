@@ -18,6 +18,17 @@ spec:
         - name: goserver
           image: "rogervv/hello-go:v5"
 
+          # resources para cada pod
+          # vCPU -> 1000m (milicores)
+          # fazer benchmarks para chegar nesses números
+          resources:
+            requests:       # mínimo necessário para rodar (RESERVA ISSO NO POD)
+              cpu: "300m"
+              memory: 20Mi
+            limits:         # até onde pode ir de limite
+              cpu: "300m"
+              memory: 25Mi
+
           # startupProbe  (garante a inicialização)
           startupProbe:
             httpGet:
@@ -32,7 +43,7 @@ spec:
               path: /healthz
               port: 8080        # porta do container
             periodSeconds: 3
-            failureThreshold: 1      # faz 3 verificações dos 3 segundos para reiniciar o container
+            failureThreshold: 3      # faz 3 verificações dos 3 segundos para reiniciar o container
 
           # liveness (recria o processo)
           livenessProbe:
