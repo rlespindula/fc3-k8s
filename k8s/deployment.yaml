@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goserver
+  labels:
+    app: goserver
+spec:
+  selector:
+    matchLabels:
+      app: goserver
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: goserver
+    spec:
+      containers:
+        - name: goserver
+          image: "rogervv/hello-go:v5"
+          envFrom:
+            - configMapRef:
+                name: goserver-env
+            - secretRef:
+                name: goserver-secret
+
+          # monta o volume
+          volumeMounts:
+            - mountPath: "/go/languages"
+              name: config
+
+      # cria o volume para injetar o configmap na aplicação
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-languages
+            items:
+            - key: languages
+              path: "languages.txt"
