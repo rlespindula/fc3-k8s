@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: goserver
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -18,15 +18,14 @@ spec:
         - name: goserver
           image: "rogervv/hello-go:v5"
 
-          # liveness
-          livenessProbe:
+          #readiness
+          readinessProbe:
             httpGet:
               path: /healthz
               port: 8080        # porta do container
-            periodSeconds: 5
-            failureThreshold: 3     # faz 3 verificações dos 5 segundos para reiniciar o container
-            timeoutSeconds: 1
-            successThreshold: 1     # faz 3 verificações de timeout de 1 segundo
+            periodSeconds: 3
+            failureThreshold: 1      # faz 3 verificações dos 3 segundos para reiniciar o container
+            initialDelaySeconds: 10  # espera 10 segundos para iniciar o readiness
 
           envFrom:
             - configMapRef:
