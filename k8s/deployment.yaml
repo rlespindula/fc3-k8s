@@ -23,10 +23,10 @@ spec:
           # fazer benchmarks para chegar nesses números
           resources:
             requests:       # mínimo necessário para rodar (RESERVA ISSO NO POD)
-              cpu: "300m"
+              cpu: "50m"
               memory: 20Mi
             limits:         # até onde pode ir de limite
-              cpu: "300m"
+              cpu: "50m"
               memory: 25Mi
 
           # startupProbe  (garante a inicialização)
@@ -65,9 +65,16 @@ spec:
           volumeMounts:
             - mountPath: "/go/languages"
               name: config
+              readOnly: true
+            - mountPath: "/go/pvc"
+              name: goserver-volume
 
       # cria o volume para injetar o configmap na aplicação
       volumes:
+        - name: goserver-volume
+          persistentVolumeClaim:
+            claimName: goserver-pvc
+
         - name: config
           configMap:
             name: configmap-languages

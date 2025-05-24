@@ -8,5 +8,5 @@ spec:
     name: goserver
     kind: Deployment
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 30
   targetCPUUtilizationPercentage: 25   # 75/80 é um número bom para produção
